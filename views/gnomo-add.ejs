@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Adicionar Gnomo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1 class="display-6">Cadastro de Gnomos</h1><br>
+    <form method = "post" action="/gnomo/add" enctype="multipart/form-data" class="row g-3">
+        <div class="container">
+            <div class="row"> 
+                <div class="col">
+                    <label for="inputNome" class="fw-bold">Nome</label>
+                    <input type="text" class="form-control" name="nome_gnomo" id="inputNome" placeholder="Nome do Gnomo">
+                </div>
+                <div class="col">
+                    <label for="inputFoto" class="fw-bold">Foto</label>
+                    <input type="file" class="form-control" name="foto_gnomo" id="inputFoto">
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col"></div>
+                    <label for="inputDesc" class="fw-bold">Descrição</label>
+                    <textarea class="form-control"
+                        name="desc_gnomo"
+                        id="inputDesc"
+                        rows="4"
+                        placeholder="Digite aqui a descrição do gnomo"></textarea>
+                <div class="col"></div>
+            </div>    
+            <br>    
+            <br><br>
+            <div class="row">
+                <div class="col"></div>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+                <div class="col"></div>
+            </div>            
+        </div> 
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>
+</html>
