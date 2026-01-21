@@ -6,7 +6,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var gnomoRouter = require('./routes/gnomo')
+var gnomoRouter = require('./routes/gnomo');
+var configRouter = require('./routes/config');
+var categoriaRouter = require('./routes/categoria');
 
 var app = express();
 
@@ -23,6 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/gnomo', gnomoRouter);
+app.use('/config', configRouter);
+app.use('/categoria', categoriaRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
