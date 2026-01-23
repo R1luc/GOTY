@@ -2,7 +2,6 @@ let express = require('express');
 let db = require('../utils/db');
 let router = express.Router();
 
-/* LISTAR CATEGORIAS */
 router.get('/listar-categoria', function(req, res) {
   const cmd = `
     SELECT id_categoria, nome_categoria, desc_categoria 
@@ -15,7 +14,6 @@ router.get('/listar-categoria', function(req, res) {
   });
 });
 
-/* API – GNOMOS POR CATEGORIA */
 router.get('/gnomos-categoria', function(req, res) {
   const idCategoria = req.query.id_categoria;
 
@@ -37,15 +35,12 @@ router.get('/gnomos-categoria', function(req, res) {
   });
 });
 
-/* ANEXAR / DESANEXAR GNOMOS */
 router.post('/anexar-gnomos', function(req, res) {
   let { id_categoria, gnomos } = req.body;
 
-  // 🔥 normalização correta
   if (!gnomos) gnomos = [];
   if (!Array.isArray(gnomos)) gnomos = [gnomos];
 
-  // 1️⃣ apagar votos da categoria (FK)
   const deleteVotos = `
     DELETE v FROM tb_voto v
     JOIN tb_gnomo_categoria gc 
@@ -56,7 +51,6 @@ router.post('/anexar-gnomos', function(req, res) {
   db.query(deleteVotos, [id_categoria], function(err) {
     if (err) return res.send(err);
 
-    // 2️⃣ apagar vínculos antigos
     db.query(
       'DELETE FROM tb_gnomo_categoria WHERE id_categoria = ?',
       [id_categoria],
@@ -67,7 +61,6 @@ router.post('/anexar-gnomos', function(req, res) {
           return res.redirect('/categoria/listar-categoria');
         }
 
-        // 3️⃣ inserir UM POR UM (seguro)
         let count = 0;
 
         gnomos.forEach(idGnomo => {
