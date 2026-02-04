@@ -1,0 +1,10 @@
+<nav style="position:fixed; left:0; top:0; width:100%; background:transparent; padding:8px 12px; z-index:1000;">
+  <div style="display:flex; align-items:center; justify-content:flex-start;">
+    <% if (user) { %>
+      <div style="font-weight:600;">Usuário: <%= user.username %> &nbsp;|&nbsp; <a href="/users/logout">Sair</a></div>
+    <% } else { %>
+      <div><a href="/users/login">Entrar</a> &nbsp;|&nbsp; <a href="/users/register">Registrar</a></div>
+    <% } %>
+  </div>
+</nav>
+<div style="height:44px;"></div>
