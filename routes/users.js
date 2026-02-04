@@ -56,7 +56,7 @@ router.post('/register', function(req, res, next) {
         db.query('INSERT INTO tb_usuario (nome_usuario, senha_usuario) VALUES (?, ?)', [username, hash], function(err4, result) {
           if (err4) return res.render('register', { error: 'Erro ao registrar' });
           req.session.user = { id: result.insertId, username };
-          res.redirect('/');
+          res.redirect('/index');
         });
       });
     });
@@ -93,7 +93,7 @@ router.post('/login', function(req, res, next) {
 
     // Autenticação OK — grava usuário na sessão
     req.session.user = { id: user.id_usuario, username: user.nome_usuario };
-    res.redirect('/');
+    res.redirect('/index');
   });
 });
 
