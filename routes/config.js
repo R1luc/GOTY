@@ -2,7 +2,14 @@ let express = require('express');
 let db = require('../utils/db')
 let router = express.Router();
 
-router.get('/config', function(req, res, next) {
+function auth(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect('/users/login');
+    }
+    next();
+}
+
+router.get('/config', auth, function(req, res, next) {
     res.render ('config');
 });
 

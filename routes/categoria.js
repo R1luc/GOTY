@@ -2,7 +2,14 @@ let express = require('express');
 let db = require('../utils/db');
 let router = express.Router();
 
-router.get('/listar-categoria', function(req, res) {
+function auth(req, res, next) {
+  if (!req.session.user) {
+      return res.redirect('/users/login');
+  }
+  next();
+}
+
+router.get('/listar-categoria', auth, function(req, res) {
   const cmd = `
     SELECT id_categoria, nome_categoria, desc_categoria 
     FROM tb_categoria
@@ -14,7 +21,7 @@ router.get('/listar-categoria', function(req, res) {
   });
 });
 
-router.get('/gnomos-categoria', function(req, res) {
+router.get('/gnomos-categoria', auth, function(req, res) {
   const idCategoria = req.query.id_categoria;
 
   const cmd = `
