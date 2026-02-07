@@ -48,45 +48,84 @@ router.post('/anexar-gnomos', function(req, res) {
 
   if (!gnomos) gnomos = [];
   if (!Array.isArray(gnomos)) gnomos = [gnomos];
+  const idCategoriaNum = Number(id_categoria);
+  gnomos = Array.from(new Set(gnomos.map(id => Number(id)).filter(id => Number.isFinite(id))));
 
-  const deleteVotos = `
-    DELETE v FROM tb_voto v
-    JOIN tb_gnomo_categoria gc 
-      ON v.id_gnomo_categoria = gc.id_gnomo_categoria
-    WHERE gc.id_categoria = ?
+  if (!Number.isFinite(idCategoriaNum)) {
+    return res.status(400).send('Categoria inválida');
+  }
+
+  const ensureAutoInc = `
+    ALTER TABLE tb_gnomo_categoria
+    MODIFY id_gnomo_categoria BIGINT UNSIGNED AUTO_INCREMENT
   `;
+  const getNextAuto = `
+    SELECT IFNULL(MAX(id_gnomo_categoria), 0) + 1 AS next_id
+    FROM tb_gnomo_categoria
+  `;
+  db.query(ensureAutoInc, function() {
+    db.query(getNextAuto, function(errAuto, rowsAuto) {
+      if (errAuto) return res.send(errAuto);
+      const nextId = rowsAuto && rowsAuto[0] ? Number(rowsAuto[0].next_id) : 1;
 
-  db.query(deleteVotos, [id_categoria], function(err) {
-    if (err) return res.send(err);
+      db.query('ALTER TABLE tb_gnomo_categoria AUTO_INCREMENT = ?', [nextId], function(errSet) {
+        if (errSet) return res.send(errSet);
 
-    db.query(
-      'DELETE FROM tb_gnomo_categoria WHERE id_categoria = ?',
-      [id_categoria],
-      function(err) {
-        if (err) return res.send(err);
+        db.query(
+          'SELECT id_gnomo FROM tb_gnomo_categoria WHERE id_categoria = ?',
+          [idCategoriaNum],
+          function(err, rows) {
+            if (err) return res.send(err);
 
-        if (gnomos.length === 0) {
-          return res.redirect('/categoria/listar-categoria');
-        }
+            const existentes = rows.map(r => Number(r.id_gnomo));
+            const setExistentes = new Set(existentes);
+            const setSelecionados = new Set(gnomos);
 
-        let count = 0;
+            const remover = existentes.filter(id => !setSelecionados.has(id));
+            const adicionar = gnomos.filter(id => !setExistentes.has(id));
 
-        gnomos.forEach(idGnomo => {
-          db.query(
-            'INSERT INTO tb_gnomo_categoria (id_gnomo, id_categoria) VALUES (?, ?)',
-            [Number(idGnomo), Number(id_categoria)],
-            function(err) {
-              if (err) return res.send(err);
+            const inserirNovos = () => {
+              if (adicionar.length === 0) return res.redirect('/categoria/listar-categoria');
 
-              count++;
-              if (count === gnomos.length) {
-                res.redirect('/categoria/listar-categoria');
-              }
+              const values = adicionar.map(idGnomo => [idGnomo, idCategoriaNum]);
+              db.query(
+                'INSERT INTO tb_gnomo_categoria (id_gnomo, id_categoria) VALUES ?',
+                [values],
+                function(errIns) {
+                  if (errIns) return res.send(errIns);
+                  res.redirect('/categoria/listar-categoria');
+                }
+              );
+            };
+
+            if (remover.length === 0) {
+              return inserirNovos();
             }
-          );
-        });
-      }
-    );
+
+            const deleteVotos = `
+              DELETE v FROM tb_voto v
+              INNER JOIN tb_gnomo_categoria gc
+                ON v.id_gnomo_categoria = gc.id_gnomo_categoria
+              WHERE gc.id_categoria = ?
+                AND gc.id_gnomo IN (?)
+            `;
+
+            db.query(deleteVotos, [idCategoriaNum, remover], function(errDelVotos) {
+              if (errDelVotos) return res.send(errDelVotos);
+
+              db.query(
+                'DELETE FROM tb_gnomo_categoria WHERE id_categoria = ? AND id_gnomo IN (?)',
+                [idCategoriaNum, remover],
+                function(errDelLinks) {
+                  if (errDelLinks) return res.send(errDelLinks);
+                  inserirNovos();
+                }
+              );
+            });
+          }
+        );
+      });
+    });
   });
 });
 
