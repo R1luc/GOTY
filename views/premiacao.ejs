@@ -94,10 +94,14 @@
           return;
         }
 
-        const emojis = ['🥇', '🥈', '🥉'];
+        const emojisByPlace = {
+          1: '🥇',
+          2: '🥈',
+          3: '🥉'
+        };
 
         conteudo.innerHTML = gnomos.map(function(gnomo, index) {
-          const emoji = emojis[index];
+          const emoji = emojisByPlace[gnomo.colocacao] || '⭐';
           const colocacaoClass = gnomo.colocacao === 1 ? 'top3-first' : gnomo.colocacao === 2 ? 'top3-second' : 'top3-third';
 
           let fotoHtml = '<div class="top3-photo top3-placeholder">Sem foto</div>';
@@ -112,6 +116,7 @@
 
           return '<div class="top3-card ' + colocacaoClass + '">' +
             '<div class="top3-medal">' + emoji + '</div>' +
+            '<div class="top3-place">' + gnomo.colocacao + 'º lugar</div>' +
             fotoHtml +
             '<div class="top3-name">' + gnomo.nome_gnomo + '</div>' +
             '<div class="top3-votes">' + gnomo.total_votos + ' ' + (gnomo.total_votos === 1 ? 'voto' : 'votos') + '</div>' +

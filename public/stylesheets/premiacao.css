@@ -133,6 +133,15 @@
   width: 100%;
 }
 
+.top3-place {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 8px;
+}
+
 .top3-photo {
   width: 110px;
   height: 110px;

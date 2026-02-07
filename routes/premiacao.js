@@ -40,6 +40,7 @@ router.get('/top3-categoria', auth, function(req, res) {
         LEFT JOIN tb_voto v
             ON gc.id_gnomo_categoria = v.id_gnomo_categoria
         GROUP BY g.id_gnomo, g.nome_gnomo, g.foto_gnomo
+        HAVING total_votos > 0
         ORDER BY total_votos DESC, g.nome_gnomo ASC
         LIMIT 3
     `;
@@ -47,11 +48,19 @@ router.get('/top3-categoria', auth, function(req, res) {
     db.query(cmd, [idCategoria], function(err, rows) {
         if (err) return res.status(500).json({ erro: err });
         
-        // Adicionar colocação (1º, 2º, 3º)
-        const resultado = rows.map((row, index) => ({
-            ...row,
-            colocacao: index + 1
-        }));
+        // Adicionar colocação com empate (prioriza posição mais alta)
+        let posicaoAtual = 0;
+        let votosAnterior = null;
+        const resultado = rows.map((row, index) => {
+            if (votosAnterior === null || row.total_votos !== votosAnterior) {
+                posicaoAtual = index + 1;
+                votosAnterior = row.total_votos;
+            }
+            return {
+                ...row,
+                colocacao: posicaoAtual
+            };
+        });
         
         res.json(resultado);
     });
