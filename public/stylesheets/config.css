@@ -1,0 +1,121 @@
+/* ===== CONFIG HERO ===== */
+.config-hero {
+  margin-bottom: 20px;
+  padding: 40px 0 10px;
+}
+
+.config-hero .hero-title {
+  font-size: clamp(3.5rem, 12vw, 6rem);
+  font-weight: 900;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, var(--color-accent), #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+  margin-bottom: 15px;
+}
+
+.config-hero p {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+/* ===== CONFIG CARDS ===== */
+.config-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(26, 71, 42, 0.5) 0%, rgba(139, 38, 53, 0.3) 100%);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--color-light);
+  transition: all 0.4s ease;
+  overflow: hidden;
+}
+
+.config-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--color-accent);
+  background: linear-gradient(135deg, rgba(26, 71, 42, 0.7) 0%, rgba(139, 38, 53, 0.5) 100%);
+  box-shadow: 0 20px 40px rgba(212, 175, 55, 0.15);
+}
+
+.config-card-body {
+  padding: 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.config-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.config-emoji {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  font-size: 26px;
+  box-shadow: inset 0 0 12px rgba(212, 175, 55, 0.2);
+}
+
+.config-title {
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.config-subtitle {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.85rem;
+  margin: 2px 0 0;
+}
+
+.config-desc {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.config-card-footer {
+  padding: 0 24px 24px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .config-hero .hero-title {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .config-hero p {
+    font-size: 0.95rem;
+  }
+
+  .config-card-body {
+    padding: 18px;
+  }
+
+  .config-card-footer {
+    padding: 0 18px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .config-hero .hero-title {
+    font-size: 1.8rem;
+  }
+}

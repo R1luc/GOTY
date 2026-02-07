@@ -25,9 +25,14 @@ router.get('/register', function(req, res, next) {
 router.post('/register', function(req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
+  const passwordConfirm = req.body.password_confirm;
 
-  if (!username || !password) {
+  if (!username || !password || !passwordConfirm) {
     return res.render('register', { error: 'Informe usuário e senha' });
+  }
+
+  if (password !== passwordConfirm) {
+    return res.render('register', { error: 'As senhas não coincidem' });
   }
 
   // Cria a tabela se não existir.
@@ -68,8 +73,11 @@ router.post('/register', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
+  const passwordConfirm = req.body.password_confirm;
 
-  if (!username || !password) return res.render('login', { error: 'Informe usuário e senha' });
+  if (!username || !password || !passwordConfirm) return res.render('login', { error: 'Informe usuário e senha' });
+
+  if (password !== passwordConfirm) return res.render('login', { error: 'As senhas não coincidem' });
 
   // Busca o usuário pelo nome
   db.query('SELECT id_usuario, nome_usuario, senha_usuario FROM tb_usuario WHERE nome_usuario = ?', [username], function(err, results) {

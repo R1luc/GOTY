@@ -11,6 +11,7 @@ var gnomoRouter = require('./routes/gnomo');
 var configRouter = require('./routes/config');
 var categoriaRouter = require('./routes/categoria');
 var votosRouter = require('./routes/votos');
+var premiacaoRouter = require('./routes/premiacao');
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use('/gnomo', gnomoRouter);
 app.use('/config', configRouter);
 app.use('/categoria', categoriaRouter);
 app.use('/votos', votosRouter);
+app.use('/premiacao', premiacaoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

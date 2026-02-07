@@ -1,13 +1,65 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
-    <title>Configurar Gnomos</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configurações - Gnomo do Ano</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/index.css" rel="stylesheet">
+    <link href="/stylesheets/config.css" rel="stylesheet">
   </head>
   <body>
-    <h1>Configurações</h1>
-    <a href="http://localhost:3000/index" class="btn btn-success" style="margin-bottom: 10px;">Voltar</a>
-    <a href="http://localhost:3000/gnomo/listar-gnomo" class="btn btn-success" style="margin-bottom: 10px;">Gnomos</a>
-    <a href="http://localhost:3000/categoria/listar-categoria" class="btn btn-success" style="margin-bottom: 10px;">Categorias</a>
+    <%- include('partials/header') %>
+
+    <main class="page-content container">
+      <section class="config-hero text-center">
+        <h1 class="hero-title">CONFIGURAÇÕES</h1>
+        <p class="text-muted small">Acesse as áreas administrativas do sistema</p>
+      </section>
+
+      <div class="d-flex justify-content-start mb-4">
+        <button type="button" class="btn btn-theme me-2" onclick="history.back()">← Voltar</button>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12 col-md-6">
+          <a href="/gnomo/listar-gnomo" class="config-card">
+            <div class="config-card-body">
+              <div class="config-card-header">
+                <div class="config-emoji">🧙‍♂️</div>
+                <div>
+                  <h5 class="config-title">Gnomos</h5>
+                  <p class="config-subtitle">Cadastro e galeria</p>
+                </div>
+              </div>
+              <p class="config-desc">Gerencie os gnomos cadastrados no sistema.</p>
+            </div>
+            <div class="config-card-footer">
+              <span class="btn btn-theme w-100">Abrir</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <a href="/categoria/listar-categoria" class="config-card">
+            <div class="config-card-body">
+              <div class="config-card-header">
+                <div class="config-emoji">🏆</div>
+                <div>
+                  <h5 class="config-title">Categorias</h5>
+                  <p class="config-subtitle">Regras e organização</p>
+                </div>
+              </div>
+              <p class="config-desc">Gerencie as categorias disponíveis para votação.</p>
+            </div>
+            <div class="config-card-footer">
+              <span class="btn btn-theme w-100">Abrir</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

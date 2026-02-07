@@ -28,6 +28,7 @@ router.get('/gnomos-categoria', auth, function(req, res) {
     SELECT 
       g.id_gnomo,
       g.nome_gnomo,
+      IFNULL(g.foto_gnomo, '') AS foto_gnomo,
       IF(gc.id_categoria IS NULL, 0, 1) AS anexado
     FROM tb_gnomo g
     LEFT JOIN tb_gnomo_categoria gc

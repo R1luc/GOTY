@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Premiação - Gnomo do Ano</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/stylesheets/index.css" rel="stylesheet">
+  <link href="/stylesheets/premiacao.css" rel="stylesheet">
+</head>
+
+<body>
+  <%- include('partials/header') %>
+
+  <main class="page-content container">
+
+    <section class="premiacao-hero text-center">
+      <h1 class="hero-title">PREMIAÇÃO</h1>
+      <p class="text-muted small">Veja as categorias e descubra os 3 gnomos mais votados</p>
+    </section>
+
+    <div class="d-flex justify-content-start mb-4">
+      <button type="button" class="btn btn-theme me-2" onclick="history.back()">← Voltar</button>
+    </div>
+
+    <div class="row g-4">
+      <% for (item of categorias) { %>
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="categoria-card">
+            <div class="categoria-card-body">
+              <h5 class="categoria-title"><%= item.nome_categoria %></h5>
+              <p class="categoria-desc"><%= item.desc_categoria %></p>
+            </div>
+            <div class="categoria-card-footer">
+              <button
+                class="btn btn-theme w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#Top3Modal"
+                data-id-categoria="<%= item.id_categoria %>"
+                data-nome-categoria="<%= item.nome_categoria %>">
+                Ver Top 3
+              </button>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+
+  </main>
+
+  <!-- MODAL TOP 3 -->
+  <div class="modal fade" id="Top3Modal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content premiacao-modal">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitulo">Top 3</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <div id="conteudoTop3" class="top3-grid"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const modal = document.getElementById('Top3Modal');
+    const titulo = document.getElementById('modalTitulo');
+    const conteudo = document.getElementById('conteudoTop3');
+
+    modal.addEventListener('show.bs.modal', async (event) => {
+      const button = event.relatedTarget;
+      const idCategoria = button.getAttribute('data-id-categoria');
+      const nomeCategoria = button.getAttribute('data-nome-categoria');
+
+      titulo.textContent = 'Top 3 - ' + nomeCategoria;
+      conteudo.innerHTML = '<p class="text-muted">Carregando...</p>';
+
+      try {
+        const res = await fetch('/premiacao/top3-categoria?id_categoria=' + idCategoria);
+        const gnomos = await res.json();
+
+        if (gnomos.length === 0) {
+          conteudo.innerHTML = '<p class="text-danger">Nenhum voto registrado nessa categoria.</p>';
+          return;
+        }
+
+        const emojis = ['🥇', '🥈', '🥉'];
+
+        conteudo.innerHTML = gnomos.map(function(gnomo, index) {
+          const emoji = emojis[index];
+          const colocacaoClass = gnomo.colocacao === 1 ? 'top3-first' : gnomo.colocacao === 2 ? 'top3-second' : 'top3-third';
+
+          let fotoHtml = '<div class="top3-photo top3-placeholder">Sem foto</div>';
+
+          if (gnomo.foto_gnomo && typeof gnomo.foto_gnomo === 'string' && gnomo.foto_gnomo.length > 0) {
+            let imagemUrl = gnomo.foto_gnomo;
+            if (!imagemUrl.startsWith('/')) {
+              imagemUrl = '/images/' + imagemUrl;
+            }
+            fotoHtml = '<img src="' + imagemUrl + '" alt="' + gnomo.nome_gnomo + '" class="top3-photo" />';
+          }
+
+          return '<div class="top3-card ' + colocacaoClass + '">' +
+            '<div class="top3-medal">' + emoji + '</div>' +
+            fotoHtml +
+            '<div class="top3-name">' + gnomo.nome_gnomo + '</div>' +
+            '<div class="top3-votes">' + gnomo.total_votos + ' ' + (gnomo.total_votos === 1 ? 'voto' : 'votos') + '</div>' +
+            '</div>';
+        }).join('');
+      } catch (erro) {
+        conteudo.innerHTML = '<p class="text-danger">Erro ao carregar dados: ' + erro.message + '</p>';
+        console.error('Erro:', erro);
+      }
+    });
+  </script>
+
+</body>
+</html>

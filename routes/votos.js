@@ -28,6 +28,7 @@ router.get('/listar-categorias', auth, function(req, res) {
     const cmd = `
       SELECT 
         g.id_gnomo,
+        IFNULL(g.foto_gnomo, '') AS foto_gnomo,
         g.nome_gnomo,
         IF(v.id_voto IS NULL, 0, 1) AS anexado
       FROM tb_gnomo g
