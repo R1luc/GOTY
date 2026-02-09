@@ -42,12 +42,18 @@ router.get('/top3-categoria', auth, function(req, res) {
         GROUP BY g.id_gnomo, g.nome_gnomo, g.foto_gnomo
         HAVING total_votos > 0
         ORDER BY total_votos DESC, g.nome_gnomo ASC
-        LIMIT 3
+        LIMIT 4
     `;
     
     db.query(cmd, [idCategoria], function(err, rows) {
         if (err) return res.status(500).json({ erro: err });
         
+        if (rows.length >= 4 && rows[0].total_votos === rows[3].total_votos) {
+            return res.json({
+                avisoEmpate: "4 ou mais gnomos estão empatados. Não há vencedor definido."
+            });
+        }
+
         // Adicionar colocação com empate (prioriza posição mais alta)
         let posicaoAtual = 0;
         let votosAnterior = null;

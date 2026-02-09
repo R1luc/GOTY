@@ -89,6 +89,11 @@
         const res = await fetch('/premiacao/top3-categoria?id_categoria=' + idCategoria);
         const gnomos = await res.json();
 
+        if (gnomos.avisoEmpate) {
+          conteudo.innerHTML = '<div class="alert alert-warning text-center">' + gnomos.avisoEmpate + '</div>';
+    return;
+}
+
         if (gnomos.length === 0) {
           conteudo.innerHTML = '<p class="text-danger">Nenhum voto registrado nessa categoria.</p>';
           return;

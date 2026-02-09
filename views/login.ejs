@@ -20,7 +20,6 @@
     <% if (typeof error !== 'undefined' && error) { %>
       <div class="alert alert-danger"><%= error %></div>
     <% } %>
-    <div class="alert alert-danger d-none" id="passwordMismatch">As senhas não coincidem</div>
 
     <form method="POST" action="/users/login" class="auth-card" id="loginForm" novalidate>
       <div class="mb-3">
@@ -30,10 +29,6 @@
       <div class="mb-3">
         <label class="auth-label">Senha</label>
         <input name="password" id="loginPassword" type="password" class="form-control auth-input" placeholder="Digite sua senha" required />
-      </div>
-      <div class="mb-4">
-        <label class="auth-label">Confirmar senha</label>
-        <input name="password_confirm" id="loginPasswordConfirm" type="password" class="form-control auth-input" placeholder="Confirme sua senha" required />
       </div>
       <div class="auth-actions">
         <button class="btn btn-theme" type="submit">Entrar</button>
@@ -47,23 +42,7 @@
     (function() {
       const form = document.getElementById('loginForm');
       const password = document.getElementById('loginPassword');
-      const confirm = document.getElementById('loginPasswordConfirm');
-      const error = document.getElementById('passwordMismatch');
-
-      function validateMatch() {
-        if (!password.value || !confirm.value) {
-          error.classList.add('d-none');
-          confirm.setCustomValidity('');
-          return;
-        }
-        if (password.value !== confirm.value) {
-          error.classList.remove('d-none');
-          confirm.setCustomValidity('As senhas não coincidem');
-        } else {
-          error.classList.add('d-none');
-          confirm.setCustomValidity('');
-        }
-      }
+      const error = document.querySelector('.alert-danger');
 
       password.addEventListener('input', validateMatch);
       confirm.addEventListener('input', validateMatch);

@@ -6,6 +6,10 @@ function auth(req, res, next) {
     if (!req.session.user) {
         return res.redirect('/users/login');
     }
+    if (req.session.user.id !== 1) {
+        // Usuário não é admin, redireciona para a página inicial
+        return res.redirect('/index');
+    }
     next();
 }
 

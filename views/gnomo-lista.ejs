@@ -24,9 +24,11 @@
             <button type="button" class="btn btn-theme" onclick="history.back()">
                 ← Voltar
             </button>
+             <% if (user && user.id === 1) { %>
             <a href="http://localhost:3000/gnomo/add" class="btn btn-theme">
                 + Incluir Gnomo
             </a>
+                <% } %>
         </div>
 
         <!-- Grid de Gnomos -->
@@ -41,7 +43,9 @@
                         <h5 class="gnomo-name"><%= item.nome_gnomo %></h5>
                         <p class="gnomo-description"><%= item.desc_gnomo %></p>
                         <div class="gnomo-actions">
+                            <% if (user && user.id === 1) { %>
                             <a href="/gnomo/deletar/<%= item.id_gnomo %>" class="btn btn-sm btn-delete" onclick="return confirm('Tem certeza que deseja deletar?')">Deletar</a>
+                            <% } %>
                         </div>
                     </div>
                 </div>

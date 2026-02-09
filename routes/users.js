@@ -73,12 +73,8 @@ router.post('/register', function(req, res, next) {
 router.post('/login', function(req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
-  const passwordConfirm = req.body.password_confirm;
 
-  if (!username || !password || !passwordConfirm) return res.render('login', { error: 'Informe usuário e senha' });
-
-  if (password !== passwordConfirm) return res.render('login', { error: 'As senhas não coincidem' });
-
+  if (!username || !password) return res.render('login', { error: 'Informe usuário e senha' });
   // Busca o usuário pelo nome
   db.query('SELECT id_usuario, nome_usuario, senha_usuario FROM tb_usuario WHERE nome_usuario = ?', [username], function(err, results) {
     if (err) return res.render('login', { error: 'Erro no banco' });

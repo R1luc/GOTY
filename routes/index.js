@@ -11,11 +11,14 @@ function auth(req, res, next) {
 
 /* GET home page. */
 router.get('/', auth, function(req, res) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express', user: req.session.user || null
+   });
 });
 
 router.get('/index', auth, function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express', user: req.session.user || null
+    
+   });
 });
 
 module.exports = router;

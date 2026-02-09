@@ -22,6 +22,7 @@
 
     <!-- Lado direito: Configurações -->
     <div class="nav-right">
+      <% if (user && user.id === 1) { %>
       <a href="/config/config" class="config-btn" title="Configurações">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"></circle>
@@ -32,6 +33,7 @@
           <path d="M19.78 19.78l-4.24-4.24m-3.08-3.08l-4.24-4.24"></path>
         </svg>
       </a>
+      <% } %>
     </div>
   </header>
 
@@ -48,6 +50,7 @@
 
   <!-- Seção de Ações (aparece ao fazer scroll) -->
   <section class="actions-section" id="actionsSection">
+    
     <h2>Bem-vindo à premiação de Gnomo do Ano</h2>
     <p>Descubra os melhores gnomos do ano e vote nos seus favoritos!</p>
     
