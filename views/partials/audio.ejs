@@ -1,0 +1,31 @@
+<audio id="bgMusic" autoplay loop>
+    <source src="/audio/gnomo_ost.mp3" type="audio/mpeg">
+  </audio>
+  
+  <script>
+    const music = document.getElementById("bgMusic");
+  
+    function restoreMusic() {
+      const time = localStorage.getItem("musicTime");
+      if (time) music.currentTime = time;
+  
+      music.play().catch(() => {});
+    }
+  
+    // Quando a página carrega normalmente
+    window.addEventListener("load", restoreMusic);
+  
+    // Quando volta pelo botão "voltar"
+    window.addEventListener("pageshow", restoreMusic);
+  
+    // Salva tempo antes de sair
+    window.addEventListener("beforeunload", () => {
+      localStorage.setItem("musicTime", music.currentTime);
+    });
+  
+    // Garante ativação por clique (autoplay policy)
+    document.addEventListener("click", () => {
+      music.play().catch(() => {});
+    }, { once: true });
+  </script>
+  
