@@ -13,6 +13,7 @@ router.get('/listar-categorias', auth, function(req, res) {
     const cmd = `
       SELECT id_categoria, nome_categoria, desc_categoria 
       FROM tb_categoria
+      ORDER BY id_categoria DESC
     `;
   
     db.query(cmd, [], function(err, rows) {
